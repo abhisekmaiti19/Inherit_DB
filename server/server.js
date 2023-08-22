@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 dotenv.config();
 import userRoutes from "./routes/userRoutes.js";
-import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
+// import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import connectDB from "./config/db.js";
 import cors from "cors";
 
@@ -22,8 +22,8 @@ app.use("/api/users", userRoutes);
 
 app.get("/", (req, res) => res.send("server is ready"));
 
-app.use(notFound);
-app.use(errorHandler);
+// app.use(notFound);
+// app.use(errorHandler);
 app.listen(port, () => console.log(`server started on port ${port}`));
 
 // - POST /api/user -           Register a user
