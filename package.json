@@ -9,6 +9,9 @@
     "start": "node server/server.js",
     "server": "nodemon server/server.js"
   },
+  "engines": {
+    "node": ">=14.20.1"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
