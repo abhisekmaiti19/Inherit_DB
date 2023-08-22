@@ -1,11 +1,12 @@
-import mongoose from "mongoose";
+import { mongoose } from "mongoose";
 import bcrypt from "bcryptjs";
 
 const userSchema = mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: false,
+      default: "anonymous",
     },
     email: {
       type: String,
@@ -14,6 +15,75 @@ const userSchema = mongoose.Schema(
     password: {
       type: String,
       required: true,
+    },
+    isAdmin: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    phone: {
+      type: Number,
+      required: false,
+      default: 123456789,
+    },
+    about: {
+      type: String,
+      required: false,
+      default: "Write your about",
+    },
+    college: {
+      type: String,
+      required: false,
+      default: "Your College name",
+    },
+    course: {
+      type: String,
+      required: false,
+      default: "Your Course name",
+    },
+    yog: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
+    cgpa: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
+    company: {
+      type: String,
+      required: false,
+      default: "Inherit",
+    },
+    role: {
+      type: String,
+      required: false,
+      default: "Your role",
+    },
+    start_date: {
+      type: Date,
+      required: false,
+      default: "2023-08-01",
+    },
+    end_date: {
+      type: Date,
+      required: false,
+      default: "2023-08-01",
+    },
+    resume: {
+      type: String,
+      required: false,
+      default: "https://abc",
+    },
+    photo: {
+      type: String,
+      required: false,
+      default: "https://abc",
+    },
+    skills: {
+      type: Array,
+      required: false,
     },
   },
   {
