@@ -22,8 +22,8 @@ app.use("/api/users", userRoutes);
 
 app.get("/", (req, res) => res.send("server is ready"));
 
-// app.use(notFound);
-// app.use(errorHandler);
+app.use(notFound);
+app.use(errorHandler);
 app.listen(port, () => console.log(`server started on port ${port}`));
 
 // - POST /api/user -           Register a user
