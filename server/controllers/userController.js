@@ -156,14 +156,35 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 
 const newBatch = asyncHandler(async (req, res) => {
   // const user = await User.findById(req.user._id);
-  const { courseName, regStart } = await req.body;
+  const {
+    courseName,
+    regEnd,
+    regStart,
+    batchImg,
+    description,
+    eligibility,
+    teacher,
+  } = await req.body;
   if (userActive === true) {
     const batch = await Batch.create({
       courseName,
+      regEnd,
       regStart,
+      batchImg,
+      description,
+      eligibility,
+      teacher,
     });
 
-    res.status(201).json({ message: "Course Created" });
+    res.status(201).json({
+      courseName: batch.courseName,
+      regStart: batch.regStart,
+      regEnd: batch.regEnd,
+      batchImg: batch.batchImg,
+      description: batch.description,
+      eligibility: batch.eligibility,
+      teacher: batch.teacher,
+    });
   } else {
     res.status(401).json({ message: "Signup/Login first" });
   }
