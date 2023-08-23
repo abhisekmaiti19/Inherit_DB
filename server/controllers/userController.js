@@ -13,15 +13,33 @@ const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (user && (await user.matchPassword(password))) {
-    generateToken(res, user._id);
-    userActive = true;
+    const token = generateToken(res, {
+      userId: user._id,
+      isAdmin: user.isAdmin,
+    });
     res.status(201).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        isAdmin: user.isAdmin,
+        phone: user.phone,
+        about: user.about,
+        college: user.college,
+        course: user.course,
+        yog: user.yog,
+        cgpa: user.cgpa,
+        company: user.company,
+        role: user.role,
+        start_date: user.start_date,
+        end_date: user.end_date,
+        resume: user.resume,
+        photo: user.photo,
+        skills: user.skills,
+      },
+      token,
     });
   } else {
-    userActive = false;
     res.status(401);
     throw new Error("Invalid email/password");
   }
@@ -36,7 +54,6 @@ const registerUser = asyncHandler(async (req, res) => {
   const userExists = await User.findOne({ email });
   if (userExists) {
     res.status(400);
-    userActive = false;
     throw new Error("User already exists");
   }
 
@@ -47,16 +64,34 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 
   if (user) {
-    generateToken(res, user._id);
-    userActive = true;
+    const token = generateToken(res, {
+      userId: user._id,
+      isAdmin: user.isAdmin,
+    });
     res.status(201).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        isAdmin: user.isAdmin,
+        phone: user.phone,
+        about: user.about,
+        college: user.college,
+        course: user.course,
+        yog: user.yog,
+        cgpa: user.cgpa,
+        company: user.company,
+        role: user.role,
+        start_date: user.start_date,
+        end_date: user.end_date,
+        resume: user.resume,
+        photo: user.photo,
+        skills: user.skills,
+      },
+      token,
     });
   } else {
     res.status(400);
-    userActive = false;
     throw new Error("Invalid user data");
   }
   res.status(200).json({ message: "Register user" });
@@ -70,7 +105,6 @@ const logoutUser = asyncHandler((req, res) => {
     httpOnly: true,
     expires: new Date(0),
   });
-  userActive = false;
   res.status(400).json({ message: "User Logged out" });
 });
 
@@ -128,6 +162,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     }
 
     const updatedUser = await user.save();
+
     res.status(200).json({
       _id: updatedUser._id,
       name: updatedUser.name,
@@ -165,29 +200,26 @@ const newBatch = asyncHandler(async (req, res) => {
     eligibility,
     teacher,
   } = await req.body;
-  if (userActive === true) {
-    const batch = await Batch.create({
-      courseName,
-      regEnd,
-      regStart,
-      batchImg,
-      description,
-      eligibility,
-      teacher,
-    });
 
-    res.status(201).json({
-      courseName: batch.courseName,
-      regStart: batch.regStart,
-      regEnd: batch.regEnd,
-      batchImg: batch.batchImg,
-      description: batch.description,
-      eligibility: batch.eligibility,
-      teacher: batch.teacher,
-    });
-  } else {
-    res.status(401).json({ message: "Signup/Login first" });
-  }
+  const batch = await Batch.create({
+    courseName,
+    regEnd,
+    regStart,
+    batchImg,
+    description,
+    eligibility,
+    teacher,
+  });
+
+  res.status(201).json({
+    courseName: batch.courseName,
+    regStart: batch.regStart,
+    regEnd: batch.regEnd,
+    batchImg: batch.batchImg,
+    description: batch.description,
+    eligibility: batch.eligibility,
+    teacher: batch.teacher,
+  });
 });
 
 const getBatch = asyncHandler(async (req, res) => {
