@@ -190,6 +190,13 @@ const newBatch = asyncHandler(async (req, res) => {
   }
 });
 
+const getBatch = asyncHandler(async (req, res) => {
+  const batch = await Batch.find({});
+
+  if (userActive === true) res.status(200).json(batch);
+  else res.status(401).json({ message: "Login/signup first" });
+});
+
 export {
   authUser,
   registerUser,
@@ -197,4 +204,5 @@ export {
   getUserProfile,
   updateUserProfile,
   newBatch,
+  getBatch,
 };

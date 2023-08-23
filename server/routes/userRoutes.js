@@ -7,6 +7,7 @@ import {
   getUserProfile,
   updateUserProfile,
   newBatch,
+  getBatch,
 } from "../controllers/userController.js";
 
 import { protect } from "../middleware/authMiddleware.js";
@@ -14,7 +15,7 @@ import { protect } from "../middleware/authMiddleware.js";
 router.post("/signup", registerUser);
 router.post("/login", authUser);
 router.post("/logout", logoutUser);
-router.post("/batch", newBatch);
+router.route("/batch").post(newBatch).get(getBatch);
 router
   .route("/profile")
   .get(protect, getUserProfile)
