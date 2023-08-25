@@ -1,6 +1,7 @@
 import asyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
 import Batch from "../models/batchModel.js";
+import Application from "../models/applicationModel.js";
 import generateToken from "../utils/generateToken.js";
 
 //@ desc AUTH user/set token
@@ -105,7 +106,7 @@ const logoutUser = asyncHandler((req, res) => {
     httpOnly: true,
     expires: new Date(0),
   });
-  res.status(400).json({ message: "User Logged out" });
+  res.status(200).json({ message: "User Logged out" });
 });
 
 //@ desc Get user profile
@@ -163,24 +164,31 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 
     const updatedUser = await user.save();
 
-    res.status(200).json({
-      _id: updatedUser._id,
-      name: updatedUser.name,
-      email: updatedUser.email,
+    const token = generateToken(res, {
+      userId: updatedUser._id,
       isAdmin: updatedUser.isAdmin,
-      phone: updatedUser.phone,
-      about: updatedUser.about,
-      college: updatedUser.college,
-      course: updatedUser.course,
-      yog: updatedUser.yog,
-      cgpa: updatedUser.cgpa,
-      company: updatedUser.company,
-      role: updatedUser.role,
-      start_date: updatedUser.start_date,
-      end_date: updatedUser.end_date,
-      resume: updatedUser.resume,
-      photo: updatedUser.photo,
-      skills: updatedUser.skills,
+    });
+    res.status(200).json({
+      user: {
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        isAdmin: updatedUser.isAdmin,
+        phone: updatedUser.phone,
+        about: updatedUser.about,
+        college: updatedUser.college,
+        course: updatedUser.course,
+        yog: updatedUser.yog,
+        cgpa: updatedUser.cgpa,
+        company: updatedUser.company,
+        role: updatedUser.role,
+        start_date: updatedUser.start_date,
+        end_date: updatedUser.end_date,
+        resume: updatedUser.resume,
+        photo: updatedUser.photo,
+        skills: updatedUser.skills,
+      },
+      token,
     });
   } else {
     res.status(404);
@@ -224,9 +232,92 @@ const newBatch = asyncHandler(async (req, res) => {
 
 const getBatch = asyncHandler(async (req, res) => {
   const batch = await Batch.find({});
+  res.status(200).json(batch);
+  // else res.status(401).json({ message: "Login/signup first" });
+});
 
-  if (userActive === true) res.status(200).json(batch);
-  else res.status(401).json({ message: "Login/signup first" });
+//PUT APPLICATION FOR STUDENT
+const putApplication = asyncHandler(async (req, res) => {
+  //changes in body....
+  const application = await Application.findOne({
+    userId: req.body.userId,
+    batchId: req.body.batchId,
+  });
+  if (application) {
+    application.isShortlistedForExam =
+      req.body.isShortlistedForExam || application.isShortlistedForExam;
+    application.examLink = req.body.examLink || application.examLink;
+    application.isShortlistedForInterview =
+      req.body.isShortlistedForInterview ||
+      application.isShortlistedForInterview;
+    application.interviewLink =
+      req.body.interviewLink || application.interviewLink;
+    application.isAccepted = req.body.isAccepted || application.isAccepted;
+
+    const newApplication = await application.save();
+
+    res.status(200).json({
+      userId: newApplication.userId,
+      batchId: newApplication.batchId,
+      isShortlistedForExam: newApplication.isShortlistedForExam,
+      examLink: newApplication.examLink,
+      isShortlistedForInterview: newApplication.isShortlistedForInterview,
+      interviewLink: newApplication.interviewLink,
+      isAccepted: newApplication.isAccepted,
+    });
+  } else {
+    res.status(401).json("Application not found");
+  }
+});
+
+const postApplication = asyncHandler(async (req, res) => {
+  //changes in body....
+  const application = await Application.findOne({
+    userId: req.body.userId,
+    batchId: req.body.batchId,
+  });
+  if (application) {
+    res.status(401).json("Application Found");
+  } else {
+    const newApplication = await Application.create({
+      userId: req.body.userId,
+      batchId: req.body.batchId,
+    });
+    res.status(200).json({
+      userId: newApplication.userId,
+      batchId: newApplication.batchId,
+      isShortlistedForExam: newApplication.isShortlistedForExam,
+      examLink: newApplication.examLink,
+      isShortlistedForInterview: newApplication.isShortlistedForInterview,
+      interviewLink: newApplication.interviewLink,
+      isAccepted: newApplication.isAccepted,
+    });
+  }
+});
+
+const getApplication = asyncHandler(async (req, res) => {
+  //changes in body....
+  const user = await User.findById(req.body.userId);
+
+  if (user) {
+    const application = await Application.findById(user._id);
+    res.status(200).json({
+      userId: application.userId,
+      batchId: application.batchId,
+      isShortlistedForExam: application.isShortlistedForExam,
+      examLink: application.examLink,
+      isShortlistedForInterview: application.isShortlistedForInterview,
+      interviewLink: application.interviewLink,
+      isAccepted: application.isAccepted,
+    });
+  } else {
+    res.status(401).json("register first");
+  }
+});
+
+const getAllApplication = asyncHandler(async (req, res) => {
+  const application = await Application.find({});
+  res.status(200).json(application);
 });
 
 export {
@@ -237,4 +328,8 @@ export {
   updateUserProfile,
   newBatch,
   getBatch,
+  getApplication,
+  getAllApplication,
+  putApplication,
+  postApplication,
 };

@@ -24,62 +24,54 @@ const userSchema = mongoose.Schema(
     phone: {
       type: Number,
       required: false,
-      default: 123456789,
     },
     about: {
       type: String,
       required: false,
-      default: "Write your about",
     },
     college: {
       type: String,
       required: false,
-      default: "Your College name",
     },
     course: {
       type: String,
       required: false,
-      default: "Your Course name",
     },
     yog: {
       type: Number,
       required: false,
-      default: 0,
+      default: new Date().getFullYear,
     },
     cgpa: {
       type: Number,
       required: false,
-      default: 0,
     },
     company: {
       type: String,
       required: false,
-      default: "Inherit",
     },
     role: {
       type: String,
       required: false,
-      default: "Your role",
     },
     start_date: {
       type: Date,
       required: false,
-      default: "2023-08-01",
     },
     end_date: {
       type: Date,
       required: false,
-      default: "2023-08-01",
     },
     resume: {
       type: String,
       required: false,
-      default: "https://abc",
+      default: null,
     },
     photo: {
       type: String,
       required: false,
-      default: "https://abc",
+      default:
+        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png",
     },
     skills: {
       type: Array,

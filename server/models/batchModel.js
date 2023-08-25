@@ -4,20 +4,19 @@ const batchSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  regStart: {
-    type: String,
+  batchStart: {
+    type: Date,
     required: true,
-    default: "2023-08-01T00:00:00.000Z",
   },
   regEnd: {
-    type: String,
+    type: Date,
     required: true,
-    default: "2023-08-01T00:00:00.000Z",
   },
   batchImg: {
     type: String,
     required: false,
-    default: "https://",
+    default:
+      "https://img.freepik.com/free-vector/online-certification-with-books-glasses_23-2148571394.jpg",
   },
   description: {
     type: String,

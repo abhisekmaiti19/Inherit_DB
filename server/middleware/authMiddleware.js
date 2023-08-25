@@ -25,9 +25,9 @@ const protect = asyncHandler(async (req, res, next) => {
 const protectAdmin = asyncHandler(async (req, res, next) => {
   let token;
   token = req.headers.token;
-  token = token.split(" ")[1];
 
   if (token) {
+    token = token.split(" ")[1];
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       console.log(decoded.isAdmin);
