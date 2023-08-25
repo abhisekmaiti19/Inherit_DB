@@ -239,6 +239,7 @@ const getBatch = asyncHandler(async (req, res) => {
 //PUT APPLICATION FOR STUDENT
 const putApplication = asyncHandler(async (req, res) => {
   //changes in body....
+
   const application = await Application.findOne({
     userId: req.body.userId,
     batchId: req.body.batchId,
@@ -304,8 +305,10 @@ const getApplication = asyncHandler(async (req, res) => {
 
   const application = await Application.findOne({ userId: req.body.userId });
   if (application) {
+    const user = await User.findById(req.body.userId);
     res.status(200).json({
       userId: application.userId,
+      user,
       batchId: application.batchId,
       isShortlistedForExam: application.isShortlistedForExam,
       examLink: application.examLink,
@@ -320,7 +323,19 @@ const getApplication = asyncHandler(async (req, res) => {
 
 const getAllApplication = asyncHandler(async (req, res) => {
   const application = await Application.find({});
-  res.status(200).json(application);
+  const arr = [];
+
+  for (let i = 0; i < application.length; i++) {
+    // console.log(application[i].userId);
+    try {
+      const user = await User.findById(application[i].userId);
+      arr.push({ user, ...application[i]._doc });
+    } catch (e) {
+      arr.push({ ...application[i]._doc });
+    }
+    // console.log(user);
+  }
+  res.status(200).json(arr);
 });
 
 export {
