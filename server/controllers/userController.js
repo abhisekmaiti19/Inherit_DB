@@ -297,10 +297,13 @@ const postApplication = asyncHandler(async (req, res) => {
 
 const getApplication = asyncHandler(async (req, res) => {
   //changes in body....
-  const user = await User.findById(req.body.userId);
+  //changes
 
-  if (user) {
-    const application = await Application.findById(user._id);
+  // const user = await User.findById(req.body.userId);
+  // console.log(user._id);
+
+  const application = await Application.findOne({ userId: req.body.userId });
+  if (application) {
     res.status(200).json({
       userId: application.userId,
       batchId: application.batchId,
@@ -311,7 +314,7 @@ const getApplication = asyncHandler(async (req, res) => {
       isAccepted: application.isAccepted,
     });
   } else {
-    res.status(401).json("register first");
+    res.status(401).json("Application Not Found");
   }
 });
 
