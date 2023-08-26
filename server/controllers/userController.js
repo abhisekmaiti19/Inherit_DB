@@ -201,8 +201,8 @@ const newBatch = asyncHandler(async (req, res) => {
   // const user = await User.findById(req.user._id);
   const {
     courseName,
+    batchStart,
     regEnd,
-    regStart,
     batchImg,
     description,
     eligibility,
@@ -211,8 +211,8 @@ const newBatch = asyncHandler(async (req, res) => {
 
   const batch = await Batch.create({
     courseName,
+    batchStart,
     regEnd,
-    regStart,
     batchImg,
     description,
     eligibility,
@@ -221,7 +221,7 @@ const newBatch = asyncHandler(async (req, res) => {
 
   res.status(201).json({
     courseName: batch.courseName,
-    regStart: batch.regStart,
+    batchStart: batch.batchStart,
     regEnd: batch.regEnd,
     batchImg: batch.batchImg,
     description: batch.description,
