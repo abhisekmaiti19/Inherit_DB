@@ -10,6 +10,10 @@ const applicationSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  courseName: {
+    type: String,
+    required: true,
+  },
   isShortlistedForExam: {
     type: Boolean,
     required: false,

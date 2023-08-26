@@ -283,10 +283,12 @@ const postApplication = asyncHandler(async (req, res) => {
     const newApplication = await Application.create({
       userId: req.body.userId,
       batchId: req.body.batchId,
+      courseName: req.body.courseName,
     });
     res.status(200).json({
       userId: newApplication.userId,
       batchId: newApplication.batchId,
+      courseName: newApplication.courseName,
       isShortlistedForExam: newApplication.isShortlistedForExam,
       examLink: newApplication.examLink,
       isShortlistedForInterview: newApplication.isShortlistedForInterview,
@@ -310,6 +312,7 @@ const getApplication = asyncHandler(async (req, res) => {
       userId: application.userId,
       user,
       batchId: application.batchId,
+      courseName: application.courseName,
       isShortlistedForExam: application.isShortlistedForExam,
       examLink: application.examLink,
       isShortlistedForInterview: application.isShortlistedForInterview,
