@@ -17,7 +17,7 @@ const applicationSchema = mongoose.Schema({
   isShortlistedForExam: {
     type: Boolean,
     required: false,
-    default: false,
+    default: null,
   },
   examLink: {
     type: String,
@@ -27,7 +27,7 @@ const applicationSchema = mongoose.Schema({
   isShortlistedForInterview: {
     type: Boolean,
     required: false,
-    default: false,
+    default: null,
   },
 
   interviewLink: {
@@ -38,7 +38,7 @@ const applicationSchema = mongoose.Schema({
   isAccepted: {
     type: Boolean,
     required: false,
-    default: false,
+    default: null,
   },
 });
 
