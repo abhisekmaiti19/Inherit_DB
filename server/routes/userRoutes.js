@@ -19,7 +19,7 @@ import { protect, protectAdmin } from "../middleware/authMiddleware.js";
 router.post("/signup", registerUser);
 router.post("/login", authUser);
 router.post("/logout", logoutUser);
-router.route("/batch").post(protectAdmin, newBatch).get(protectAdmin, getBatch);
+router.route("/batch").post(protectAdmin, newBatch).get(protect, getBatch);
 router
   .route("/profile")
   .get(protect, getUserProfile)
