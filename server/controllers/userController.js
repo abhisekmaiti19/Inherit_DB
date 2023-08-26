@@ -303,11 +303,12 @@ const getApplication = asyncHandler(async (req, res) => {
   //changes
 
   // const user = await User.findById(req.body.userId);
-  // console.log(user._id);
+  // console.log(req.headers.userid);
 
-  const application = await Application.findOne({ userId: req.headers.userId });
+  const application = await Application.findOne({ userId: req.headers.userid });
   if (application) {
-    const user = await User.findById(req.headers.userId);
+    const user = await User.findById(req.headers.userid);
+
     res.status(200).json({
       userId: application.userId,
       user,
