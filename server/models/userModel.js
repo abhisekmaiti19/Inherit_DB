@@ -40,7 +40,7 @@ const userSchema = mongoose.Schema(
     yog: {
       type: Number,
       required: false,
-      default: new Date().getFullYear,
+      default: null,
     },
     cgpa: {
       type: Number,
